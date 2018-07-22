@@ -1,6 +1,10 @@
 const {GraphQLServer} = require('graphql-yoga');
 const {Prisma} = require('prisma-binding');
 
+const Query = require('./resolvers/Query');
+const Mutation = require('./resolvers/Mutation');
+const AuthPayload = require('./resolvers/AuthPayload');
+
 // en l'absence de DB, on utilisera des variables :
 
 // let links = [{
@@ -12,29 +16,9 @@ const {Prisma} = require('prisma-binding');
 // let idCount = links.length;
 
 const resolvers = {
-  Query: {
-    info: () => 'This is the API of a Hackernews Clone',
-    feed: (root, args, context, info) => {
-      return context.db.query.links({}, info);
-    },
-  },
-  Mutation: {
-    post: (root, args, context, info) => {
-      return context.db.mutation.createLink({
-        data: {
-          url: args.url,
-          description: args.description,
-        },
-      }, info);
-    },
-  },
-  // Link resolver est ici facultatif à l'exécution de la requête
-  // GraphQL Server déduit lui-même sa composition
-  // Link: {
-  //   id: (root) => root.id,
-  //   description: (root) => root.description,
-  //   url: (root) => root.url,
-  // }
+  Query,
+  Mutation,
+  AuthPayload
 };
 
 const server = new GraphQLServer({
