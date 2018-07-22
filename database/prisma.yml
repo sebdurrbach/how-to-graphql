@@ -1,0 +1,8 @@
+#endpoint: ''
+endpoint: https://eu1.prisma.sh/seb-durrbach/database/dev
+
+datamodel: datamodel.graphql
+hooks:
+  post-deploy:
+    - graphql get-schema --project database
+secret: mysecret123
